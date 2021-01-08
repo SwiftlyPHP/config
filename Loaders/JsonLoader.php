@@ -7,6 +7,15 @@ use Swiftly\Config\{
     Store
 };
 
+use function is_string;
+use function is_array;
+use function is_readable;
+use function file_get_contents;
+use function json_decode;
+use function json_last_error;
+
+use const JSON_ERROR_NONE;
+
 /**
  * Class for loading and parsing json config files
  *
@@ -21,6 +30,16 @@ Class JsonLoader Implements LoaderInterface
      * @var string $filename File path
      */
     protected $filename;
+
+    /**
+     * Name of the current group being parsed
+     *
+     * Used to track the group name during recursive calls to the
+     * {@see JsonLoader::parse} method.
+     *
+     * @var string $groupname Group name
+     */
+    protected $groupname = '';
 
     /**
      * Creates a loader for the given config file
@@ -40,10 +59,67 @@ Class JsonLoader Implements LoaderInterface
      */
     public function load( Store $config ) : Store
     {
-        // TODO:
+        $json = $this->json();
+
+        // Nothing to do!
+        if ( empty( $json ) ) {
+            return $config;
+        }
+
+        $this->parse( $json, $config );
 
         return $config;
     }
 
-    // TODO: 
+    /**
+     * Recursively parse the values into the store
+     *
+     * @param array $values Config values
+     * @param Store $config Config store
+     * @return void         N/a
+     */
+    private function parse( array $values, Store $config ) : void
+    {
+        $previous = $this->groupname;
+
+        foreach ( $values as $name => $value ) {
+            if ( !is_string( $name ) || !empty( $name ) ) {
+                $this->groupname = "{$this->groupname}.$name";
+            }
+
+            // Recurse if required
+            if ( is_array( $value ) ) {
+                $this->parse( $value, $config );
+            }
+
+            $config->set( $name, $value );
+        }
+
+        // Reset
+        $this->groupname = $previous;
+
+        return;
+    }
+
+    /**
+     * Attempt to load the JSON file
+     *
+     * @return array JSON data
+     */
+    private function json() : array
+    {
+        if ( !is_readable( $this->filename ) ) {
+            return [];
+        }
+
+        $content = (string)file_get_contents( $this->filename );
+        $content = json_decode( $content, true );
+
+        // Parse error?
+        if ( !is_array( $content ) || json_last_error() !== JSON_ERROR_NONE ) {
+            return [];
+        }
+
+        return $content;
+    }
 }
