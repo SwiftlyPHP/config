@@ -38,11 +38,11 @@ Class Store
      * Get config values from the given loader
      *
      * @param LoaderInterface $loader Config loader
-     * @return void                   N/a
+     * @return self                   Allow chaining
      */
-    public function load( LoaderInterface $loader ) : void
+    public function load( LoaderInterface $loader ) : Store
     {
-        $loader->load( $this );
+        return $loader->load( $this );
     }
 
 

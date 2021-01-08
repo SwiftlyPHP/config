@@ -84,17 +84,19 @@ Class JsonLoader Implements LoaderInterface
         $previous = $this->groupname;
 
         foreach ( $values as $name => $value ) {
-            if ( is_string( $name ) && !empty( $name ) ) {
-                $this->groupname = "{$this->groupname}.$name";
-                $name = $this->groupname;
+            // Already inside a group?
+            if ( !empty( $previous ) ) {
+                $name = "$previous.$name";
             }
+
+            $this->groupname = $name;
 
             // Recurse if required
             if ( is_array( $value ) ) {
                 $this->parse( $value, $config );
             }
 
-            $config->set( $name, $value );
+            $config->set( $this->groupname, $value );
         }
 
         // Reset
