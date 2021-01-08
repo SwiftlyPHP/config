@@ -37,9 +37,10 @@ Class JsonLoader Implements LoaderInterface
      * Used to track the group name during recursive calls to the
      * {@see JsonLoader::parse} method.
      *
+     * @internal
      * @var string $groupname Group name
      */
-    protected $groupname = '';
+    private $groupname = '';
 
     /**
      * Creates a loader for the given config file
