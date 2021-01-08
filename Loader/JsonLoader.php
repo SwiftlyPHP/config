@@ -86,6 +86,7 @@ Class JsonLoader Implements LoaderInterface
         foreach ( $values as $name => $value ) {
             if ( is_string( $name ) && !empty( $name ) ) {
                 $this->groupname = "{$this->groupname}.$name";
+                $name = $this->groupname;
             }
 
             // Recurse if required
