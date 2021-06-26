@@ -13,5 +13,8 @@
         "psr-4": {
             "Swiftly\\Config\\": "src/"
         }
+    },
+    "require-dev": {
+        "vimeo/psalm": "^4.8"
     }
 }
