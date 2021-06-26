@@ -2,12 +2,9 @@
 
 namespace Swiftly\Config\Loader;
 
-use Swiftly\Config\{
-    LoaderInterface,
-    Store
-};
+use Swiftly\Config\LoaderInterface;
+use Swiftly\Config\Store;
 
-use function is_string;
 use function is_array;
 use function is_readable;
 use function file_get_contents;
@@ -29,7 +26,7 @@ Class JsonLoader Implements LoaderInterface
      *
      * @var string $filename File path
      */
-    protected $filename;
+    private $filename;
 
     /**
      * Name of the current group being parsed
@@ -75,21 +72,22 @@ Class JsonLoader Implements LoaderInterface
     /**
      * Recursively parse the values into the store
      *
-     * @param array $values Config values
-     * @param Store $config Config store
-     * @return void         N/a
+     * @param mixed[] $values Config values
+     * @param Store $config   Config store
+     * @return void           N/a
      */
     private function parse( array $values, Store $config ) : void
     {
         $previous = $this->groupname;
 
+        /** @var mixed $value */
         foreach ( $values as $name => $value ) {
             // Already inside a group?
             if ( !empty( $previous ) ) {
                 $name = "$previous.$name";
             }
 
-            $this->groupname = $name;
+            $this->groupname = (string)$name;
 
             // Recurse if required
             if ( is_array( $value ) ) {
@@ -108,7 +106,7 @@ Class JsonLoader Implements LoaderInterface
     /**
      * Attempt to load the JSON file
      *
-     * @return array JSON data
+     * @return mixed[] JSON data
      */
     private function json() : array
     {
@@ -117,6 +115,7 @@ Class JsonLoader Implements LoaderInterface
         }
 
         $content = (string)file_get_contents( $this->filename );
+        /** @psalm-suppress MixedAssignment */
         $content = json_decode( $content, true );
 
         // Parse error?
