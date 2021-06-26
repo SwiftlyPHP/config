@@ -1,0 +1,17 @@
+{
+    "name": "swiftly/config",
+    "description": "Simple config management utilities.",
+    "homepage": "https://github.com/SwiftlyPHP/config",
+    "readme": "README.md",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.1",
+        "ext-json": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Swiftly\\Config\\": "src/"
+        }
+    }
+}
