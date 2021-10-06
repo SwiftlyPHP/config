@@ -24,6 +24,7 @@ Class JsonLoader Implements LoaderInterface
     /**
      * Path to the config JSON file
      *
+     * @readonly
      * @var string $filename File path
      */
     private $filename;
