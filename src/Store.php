@@ -18,7 +18,7 @@ Class Store
     /**
      * Array of config values
      *
-     * Assumed to be a multidimensional array in format <string, mixed>.
+     * @psalm-var array<string,mixed> $values
      *
      * @var array $values Config values
      */
@@ -26,6 +26,8 @@ Class Store
 
     /**
      * Creates a new config from the (optionally) provided values
+     *
+     * @psalm-param array<string,mixed> $values
      *
      * @param array $values Config values
      */
