@@ -42,7 +42,7 @@ Class Store
      * @param LoaderInterface $loader Config loader
      * @return self                   Allow chaining
      */
-    public function load( LoaderInterface $loader ) : Store
+    public function load( LoaderInterface $loader ) : self
     {
         return $loader->load( $this );
     }
