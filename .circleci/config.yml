@@ -12,5 +12,5 @@ jobs:
       - run: ./vendor/bin/psalm
       - run: ./vendor/bin/phpunit --config=phpunit.dist.xml
       - coveralls/upload:
-        flag_name: "Unit Tests"
-        path_to_lcov: ./reports/coverage.xml
+          flag_name: "Unit Tests"
+          path_to_lcov: ./reports/coverage.xml
