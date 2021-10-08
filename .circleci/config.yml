@@ -12,7 +12,7 @@ jobs:
       - run: composer require --dev php-coveralls/php-coveralls
       - run: ./vendor/bin/psalm
       - run: XDEBUG_MODE=coverage ./vendor/bin/phpunit --config=phpunit.dist.xml
-      - run: ./vendor/bin/php-coveralls -x ./reports/coverage.xml -o ./reports/coveralls.yml
+      - run: ./vendor/bin/php-coveralls
       - coveralls/upload:
           flag_name: "Unit Tests"
           path_to_lcov: ./reports/coverage.yml
