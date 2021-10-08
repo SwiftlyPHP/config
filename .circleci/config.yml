@@ -1,6 +1,4 @@
 version: 2.1
-orbs:
-  coveralls: coveralls/coveralls@1.0.6
 jobs:
   build:
     docker:
@@ -13,6 +11,3 @@ jobs:
       - run: ./vendor/bin/psalm
       - run: XDEBUG_MODE=coverage ./vendor/bin/phpunit --config=phpunit.dist.xml
       - run: ./vendor/bin/php-coveralls
-      - coveralls/upload:
-          flag_name: "Unit Tests"
-          path_to_lcov: ./reports/coverage.yml
