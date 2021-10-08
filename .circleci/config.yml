@@ -9,8 +9,10 @@ jobs:
       - checkout
       - run: sudo apt update
       - run: composer install -n
+      - run: composer require --dev php-coveralls/php-coveralls
       - run: ./vendor/bin/psalm
       - run: XDEBUG_MODE=coverage ./vendor/bin/phpunit --config=phpunit.dist.xml
+      - run: ./vendor/bin/php-coveralls -x ./reports/coverage.xml ./reports/coveralls.yml
       - coveralls/upload:
           flag_name: "Unit Tests"
-          path_to_lcov: ./reports/coverage.xml
+          path_to_lcov: ./reports/coverage.yml
