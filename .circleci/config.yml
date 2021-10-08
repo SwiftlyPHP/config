@@ -11,7 +11,7 @@ jobs:
               sudo apt update
               sudo apt install php-xdebug
               sudo mkdir -p /usr/local/etc/php/conf.d
-              echo "zend_extension=xdebug.so" > /usr/local/etc/php/conf.d/xdebug.ini
+              echo "zend_extension=xdebug.so" | sudo tee -a /usr/local/etc/php/conf.d/xdebug.ini
       - run:
           name: "Composer Install"
           command: |
