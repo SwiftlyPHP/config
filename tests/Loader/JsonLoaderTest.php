@@ -59,6 +59,24 @@ Class JsonLoaderTest Extends TestCase
                 [$this->equalTo( 'nested' ), $this->equalTo( self::EXAMPLE_JSON['nested'] )]
             );
 
-        $this->loader->load( $store );
+        $result = $this->loader->load( $store );
+
+        self::assertSame( $store, $result );
+    }
+
+    public function testHandlesMissingFile() : void
+    {
+        self::tearDownAfterClass(); // Remove the file just for this test
+
+        $store = $this->createMock( Store::class );
+
+        $store->expects( $this->never() )
+            ->method( 'set' );
+
+        $result = $this->loader->load( $store );
+
+        self::assertSame( $store, $result );
+
+        self::setUpBeforeClass(); // Restore file for later tests
     }
 }
