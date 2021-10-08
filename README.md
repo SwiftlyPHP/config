@@ -1,9 +1,12 @@
 # Swiftly - Config
-## About
+
+[![PHP Version](https://img.shields.io/badge/php-^7.1-blue)](https://www.php.net/supported-versions)
+[![Coverage Status](https://coveralls.io/repos/github/SwiftlyPHP/config/badge.svg?branch=main)](https://coveralls.io/github/SwiftlyPHP/config?branch=main)
+[![CircleCI](https://circleci.com/gh/SwiftlyPHP/config/tree/main.svg?style=shield)](https://circleci.com/gh/SwiftlyPHP/config/tree/main)
 
 The Swiftly Config component is a very simple, small and low footprint config
-management utility that tries to make working with custom configuration files as
-straightforward as possible.
+management utility that tries to make reading values from custom configuration
+files as straightforward as possible.
 
 ## Usage
 ### Basics
@@ -91,7 +94,7 @@ $value = $config->get( 'value', 'default' );
 
 It is not uncommon for config values to be nested under one (or several) groups.
 A good example of this is the `php.ini` config file, which contains identifiers
-such as 
+such as
 
 // TODO
 
