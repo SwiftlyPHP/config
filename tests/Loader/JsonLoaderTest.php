@@ -48,11 +48,14 @@ Class JsonLoaderTest Extends TestCase
     {
         $store = $this->createMock( Store::class );
 
-        $store->expects( $this->once() )
+        $store->expects( $this->exactly( 5 ) )
             ->method( 'set' )
-            ->with(
-                $this->equalTo( 'id' ),
-                $this->equalTo( 123 )
+            ->withConsecutive(
+                [$this->equalTo( 'id' ), $this->equalTo( 123 )],
+                [$this->equalTo( 'name' ), $this->equalTo( 'John' )],
+                [$this->equalTo( 'nested.life' ), $this->equalTo( 42 )],
+                [$this->equalTo( 'nested.example' ), $this->equalTo( 'some_value' )],
+                [$this->equalTo( 'nested' ), $this->equalTo( self::EXAMPLE_JSON['nested'] )]
             );
 
         // TODO:
