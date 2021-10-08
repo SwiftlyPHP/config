@@ -6,8 +6,17 @@ jobs:
     steps:
       - checkout
       - run: sudo apt update
-      - run: composer install -n
-      - run: composer require --dev php-coveralls/php-coveralls
-      - run: ./vendor/bin/psalm
-      - run: XDEBUG_MODE=coverage ./vendor/bin/phpunit --config=phpunit.dist.xml
-      - run: ./vendor/bin/php-coveralls
+      - run:
+          name: "Composer Install"
+          command: |
+              composer install -n
+              composer require --dev php-coveralls/php-coveralls
+      - run:
+          name: "Code Quality"
+          command: |
+              ./vendor/bin/psalm
+      - run:
+          name: "Unit Tests"
+          command: |
+              XDEBUG_MODE=coverage ./vendor/bin/phpunit --config=phpunit.xml.dist
+              ./vendor/bin/php-coveralls
