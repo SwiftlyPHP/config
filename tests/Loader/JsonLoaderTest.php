@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 use function file_put_contents;
 use function json_encode;
+use function unlink;
 
 /**
  * @group Unit
@@ -15,7 +16,7 @@ use function json_encode;
 Class JsonLoaderTest Extends TestCase
 {
 
-    const TEMP_FILE = 'php://memory';
+    const TEMP_FILE = __DIR__ . '/test.json';
 
     const EXAMPLE_JSON = [
         'id' => 123,
@@ -36,7 +37,7 @@ Class JsonLoaderTest Extends TestCase
 
     public static function tearDownAfterClass(): void
     {
-        file_put_contents( self::TEMP_FILE, '' );
+        unlink( self::TEMP_FILE );
     }
 
     protected function setUp() : void
@@ -44,7 +45,7 @@ Class JsonLoaderTest Extends TestCase
         $this->loader = new JsonLoader( self::TEMP_FILE );
     }
 
-    public function testLoadsValuesFromJsonFile() : void
+    public function testLoadsValuesIntoStore() : void
     {
         $store = $this->createMock( Store::class );
 
@@ -57,8 +58,6 @@ Class JsonLoaderTest Extends TestCase
                 [$this->equalTo( 'nested.example' ), $this->equalTo( 'some_value' )],
                 [$this->equalTo( 'nested' ), $this->equalTo( self::EXAMPLE_JSON['nested'] )]
             );
-
-        // TODO:
 
         $this->loader->load( $store );
     }
