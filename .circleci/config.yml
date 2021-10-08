@@ -5,7 +5,12 @@ jobs:
       - image: cimg/php:7.4
     steps:
       - checkout
-      - run: sudo apt update
+      - run:
+          name: "System Setup"
+          command: |
+              sudo apt update
+              sudo apt install php-xdebug
+              docker-php-ext-enable xdebug
       - run:
           name: "Composer Install"
           command: |
