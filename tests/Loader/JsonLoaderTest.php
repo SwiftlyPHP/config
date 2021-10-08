@@ -64,6 +64,22 @@ Class JsonLoaderTest Extends TestCase
         self::assertSame( $store, $result );
     }
 
+    public function testHandlesInvalidFile() : void
+    {
+        file_put_contents( self::TEMP_FILE, 'this_isnt_json' ); // Invalid file just for this test
+
+        $store = $this->createMock( Store::class );
+
+        $store->expects( $this->never() )
+            ->method( 'set' );
+
+        $result = $this->loader->load( $store );
+
+        self::assertSame( $store, $result );
+
+        self::setUpBeforeClass();
+    }
+
     public function testHandlesMissingFile() : void
     {
         self::tearDownAfterClass(); // Remove the file just for this test
