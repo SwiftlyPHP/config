@@ -20,3 +20,11 @@ jobs:
           command: |
               XDEBUG_MODE=coverage ./vendor/bin/phpunit --config=phpunit.xml.dist
               ./vendor/bin/php-coveralls
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: main
