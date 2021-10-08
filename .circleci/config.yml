@@ -2,16 +2,13 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: cimg/php:7.4
+      - image: circleci/php:7.4
     steps:
       - checkout
       - run:
           name: "System Setup"
           command: |
               sudo apt update
-              sudo apt install php-xdebug
-              sudo mkdir -p /usr/local/etc/php/conf.d
-              echo "zend_extension=xdebug.so" | sudo tee -a /usr/local/etc/php/conf.d/xdebug.ini
       - run:
           name: "Composer Install"
           command: |
