@@ -1,0 +1,16 @@
+version: 2.1
+orbs:
+  coveralls: coveralls/coveralls@1.0.6
+jobs:
+  build:
+    docker:
+      - image: circleci/php:7.4-node-browsers
+    steps:
+      - checkout
+      - run: sudo apt update
+      - run: composer install -n
+      - run: ./vendor/bin/psalm
+      - run: ./vendor/bin/phpunit --config=phpunit.dist.xml
+      - coveralls/upload:
+        flag_name: "Unit Tests"
+        path_to_lcov: ./reports/coverage.xml
