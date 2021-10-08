@@ -10,6 +10,7 @@ jobs:
           command: |
               sudo apt update
               sudo apt install php-xdebug
+              echo "zend_extension=xdebug.so" >> /etc/php/php.ini
       - run:
           name: "Composer Install"
           command: |
