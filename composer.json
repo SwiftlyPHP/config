@@ -6,16 +6,21 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^7.1 || ^8",
+        "php": "^7.4 || ^8",
         "ext-json": "*"
+    },
+    "require-dev": {
+        "vimeo/psalm": "^5.15",
+        "phpunit/phpunit": "^9.6"
     },
     "autoload": {
         "psr-4": {
             "Swiftly\\Config\\": "src/"
         }
     },
-    "require-dev": {
-        "vimeo/psalm": "^4.8",
-        "phpunit/phpunit": "^9.5"
+    "autoload-dev": {
+        "psr-4": {
+            "Swiftly\\Config\\Tests\\": "tests/"
+        }
     }
 }

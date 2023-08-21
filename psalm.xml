@@ -1,11 +1,15 @@
 <?xml version="1.0"?>
 <psalm
-    errorLevel="1"
-    resolveFromConfigFile="true"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
-    phpVersion="7.1"
+    errorLevel="1"
+    phpVersion="7.4"
+    allowNamedArgumentCalls="false"
+    checkForThrowsDocblock="true"
+    findUnusedCode="true"
+    findUnusedBaselineEntry="false"
+    findUnusedVariablesAndParams="true"
 >
     <projectFiles>
         <directory name="src" />

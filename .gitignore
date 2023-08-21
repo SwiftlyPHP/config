@@ -4,3 +4,6 @@
 
 # PHPUnit
 /reports
+
+# Mac specific
+.DS_Store
