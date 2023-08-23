@@ -5,7 +5,7 @@ namespace Swiftly\Config\Tests;
 use Swiftly\Config\Store;
 use PHPUnit\Framework\TestCase;
 
-class StoreTest extends TestCase
+final class StoreTest extends TestCase
 {
     private Store $store;
 
@@ -29,7 +29,10 @@ class StoreTest extends TestCase
         ]);
     }
 
-    /** @covers \Swiftly\Config\Store::get */
+    /**
+     * @covers \Swiftly\Config\Store::__construct
+     * @covers \Swiftly\Config\Store::get
+     */
     public function testCanGetValue(): void
     {
         self::assertEquals('Douglas', $this->store->get('name'));
@@ -40,7 +43,10 @@ class StoreTest extends TestCase
         self::assertNull($this->store->get('poetry'));
     }
 
-    /** @covers \Swiftly\Config\Store::get */
+    /**
+     * @covers \Swiftly\Config\Store::__construct
+     * @covers \Swiftly\Config\Store::get
+     */
     public function testCanGetNestedValue(): void
     {
         self::assertEquals('Earth', $this->store->get('friends.arthur.planet'));
@@ -50,7 +56,10 @@ class StoreTest extends TestCase
         self::assertNull($this->store->get('friends.ford'));
     }
 
-    /** @covers \Swiftly\Config\Store::has */
+    /**
+     * @covers \Swiftly\Config\Store::__construct
+     * @covers \Swiftly\Config\Store::has
+     */
     public function testCanCheckValueExists(): void
     {
         self::assertTrue($this->store->has('name'));
@@ -59,11 +68,14 @@ class StoreTest extends TestCase
         self::assertTrue($this->store->has('null'));
         self::assertTrue($this->store->has('bool'));
 
-        self::assertFalse($this->store->get('missing'));
-        self::assertFalse($this->store->get('unknown'));
+        self::assertFalse($this->store->has('missing'));
+        self::assertFalse($this->store->has('unknown'));
     }
 
-    /** @covers \Swiftly\Config\Store::has */
+    /**
+     * @covers \Swiftly\Config\Store::__construct
+     * @covers \Swiftly\Config\Store::has
+     */
     public function testCanCheckNestedValueExists(): void
     {
         self::assertTrue($this->store->has('friends.arthur.planet'));
