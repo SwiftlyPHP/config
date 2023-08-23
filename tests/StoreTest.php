@@ -3,62 +3,86 @@
 namespace Swiftly\Config\Tests;
 
 use Swiftly\Config\Store;
-use Swiftly\Config\LoaderInterface;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @group Unit
- */
-Class StoreTest Extends TestCase
+final class StoreTest extends TestCase
 {
+    private Store $store;
 
-    /** @var Store $store */
-    private $store;
-
-    protected function setUp() : void
+    public function setUp(): void
     {
         $this->store = new Store([
-            'id' => 123,
-            'test' => 'value',
-            'array' => [1, 2, 3]
+            'name' => 'Douglas',
+            'age' => 42,
+            'friends' => [
+                'arthur' => [
+                    'planet' => 'Earth',
+                    'friendly' => true,
+                    'is_robot' => false
+                ],
+                'marvin' => [
+                    'is_robot' => true
+                ]
+            ],
+            'null' => null,
+            'bool' => false
         ]);
     }
 
-    public function testCanGetConfigValue() : void
+    /**
+     * @covers \Swiftly\Config\Store::__construct
+     * @covers \Swiftly\Config\Store::get
+     */
+    public function testCanGetValue(): void
     {
-        self::assertSame( 123, $this->store->get( 'id' ) );
-        self::assertSame( 'value', $this->store->get( 'test' ) );
-        self::assertSame( [1, 2, 3], $this->store->get( 'array' ) );
+        self::assertEquals('Douglas', $this->store->get('name'));
+        self::assertEquals(42, $this->store->get('age'));
+        self::assertIsArray($this->store->get('friends'));
+
+        self::assertNull($this->store->get('towel'));
+        self::assertNull($this->store->get('poetry'));
     }
 
-    public function testCanGetDefaultValue() : void
+    /**
+     * @covers \Swiftly\Config\Store::__construct
+     * @covers \Swiftly\Config\Store::get
+     */
+    public function testCanGetNestedValue(): void
     {
-        self::assertSame( 42, $this->store->get( 'life', 42 ) );
-        self::assertSame( 'John', $this->store->get( 'name', 'John' ) );
-        self::assertNull( $this->store->get( 'invalid' ) );
+        self::assertEquals('Earth', $this->store->get('friends.arthur.planet'));
+        self::assertTrue($this->store->get('friends.arthur.friendly'));
+
+        self::assertNull($this->store->get('friends.zaphod'));
+        self::assertNull($this->store->get('friends.ford'));
     }
 
-    public function testCanSetConfigValue() : void
+    /**
+     * @covers \Swiftly\Config\Store::__construct
+     * @covers \Swiftly\Config\Store::has
+     */
+    public function testCanCheckValueExists(): void
     {
-        $this->store->set( 'example', 'some_value' );
+        self::assertTrue($this->store->has('name'));
+        self::assertTrue($this->store->has('age'));
+        self::assertTrue($this->store->has('friends'));
+        self::assertTrue($this->store->has('null'));
+        self::assertTrue($this->store->has('bool'));
 
-        self::assertSame( 'some_value', $this->store->get( 'example' ) );
+        self::assertFalse($this->store->has('missing'));
+        self::assertFalse($this->store->has('unknown'));
     }
 
-    public function testCanCheckKeyExists() : void
+    /**
+     * @covers \Swiftly\Config\Store::__construct
+     * @covers \Swiftly\Config\Store::has
+     */
+    public function testCanCheckNestedValueExists(): void
     {
-        self::assertTrue( $this->store->has( 'test' ) );
-        self::assertFalse( $this->store->has( 'invalid' ) );
-    }
+        self::assertTrue($this->store->has('friends.arthur.planet'));
+        self::assertTrue($this->store->has('friends.arthur.friendly'));
+        self::assertTrue($this->store->has('friends.arthur.is_robot'));
 
-    public function testLoadsValuesFromLoader() : void
-    {
-        $loader = $this->createMock( LoaderInterface::class );
-
-        $loader->expects( $this->once() )
-            ->method( 'load' )
-            ->with( $this->equalTo( $this->store ) );
-
-        $this->store->load( $loader );
+        self::assertFalse($this->store->has('friends.marvin.friendly'));
+        self::assertFalse($this->store->has('enemies.zaphod'));
     }
 }

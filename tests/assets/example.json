@@ -1,0 +1,7 @@
+{
+    "name": "Example Json",
+    "description": "Used for tests in JsonFileTest.php",
+    "nested": {
+        "some": "nested values"
+    }
+}

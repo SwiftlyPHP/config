@@ -2,96 +2,74 @@
 
 namespace Swiftly\Config;
 
-use Swiftly\Config\LoaderInterface;
-
-use function strtolower;
+use function explode;
+use function is_array;
 use function array_key_exists;
 
 /**
- * Container used to store and manipulate config values
- *
- * @author clvarley
+ * Represents a generic config object
+ * 
+ * @api
  */
-Class Store
+class Store
 {
+    /** @var array $data */
+    private array $data;
 
     /**
-     * Array of config values
-     *
-     * @psalm-var array<string,mixed> $values
-     *
-     * @var array $values Config values
+     * Creates a new data store around a collection of values
+     * 
+     * @param array $data Config values
      */
-    protected $values;
-
-    /**
-     * Creates a new config from the (optionally) provided values
-     *
-     * @psalm-param array<string,mixed> $values
-     *
-     * @param array $values Config values
-     */
-    public function __construct( array $values = [] )
+    public function __construct(array $data)
     {
-        $this->values = $values;
+        $this->data = $data;
     }
 
     /**
-     * Get config values from the given loader
+     * Retrieve a value from the store
      *
-     * @param LoaderInterface $loader Config loader
-     * @return self                   Allow chaining
+     * @php:8.0 Use mixed type hint
+     * @template T
+     * @param string $key Config option key
+     * @param T $default  Value to return if key not found
+     * @return mixed|T    Config value
      */
-    public function load( LoaderInterface $loader ) : self
+    public function get(string $key, $default = null)// :mixed
     {
-        return $loader->load( $this );
-    }
+        $data = $this->data;
 
+        foreach (explode('.', $key) as $subkey) {
+            if (!is_array($data) || !array_key_exists($subkey, $data)) {
+                return $default;
+            }
 
-    /**
-     * Gets the value for the given setting
-     *
-     * If no value is found, the provided $default will be returned instead.
-     *
-     * @param string $key    Setting name
-     * @param mixed $default (Optional) Default value
-     * @return mixed         Setting value
-     */
-    public function get( string $key, $default = null ) // : mixed
-    {
-        $key = strtolower( $key );
+            /** @psalm-suppress MixedAssignment */
+            $data = $data[$subkey];
+        }
 
-        return ( array_key_exists( $key, $this->values )
-            ? $this->values[$key]
-            : $default
-        );
+        return $data;
     }
 
     /**
-     * Sets the value for the given setting
-     *
-     * @param string $key  Setting name
-     * @param mixed $value Setting value
-     * @return void        N/a
+     * Determine if a value exists in the store
+     * 
+     * @param string $key Config option key
+     * @return bool       Value exists in store
      */
-    public function set( string $key, $value ) : void
+    public function has(string $key): bool
     {
-        $key = strtolower( $key );
-        $this->values[$key] = $value;
+        $data = $this->data;
+        
+        foreach (explode('.', $key) as $subkey) {
+            if (!is_array($data) || !array_key_exists($subkey, $data)) {
+                return false;
+            }
 
-        return;
-    }
+            /** @psalm-suppress MixedAssignment */
+            $data = $data[$subkey];
+        }
 
-    /**
-     * Checks to see if the given setting has a value
-     *
-     * @param string $key Setting name
-     * @return bool       Has value?
-     */
-    public function has( string $key ) : bool
-    {
-        $key = strtolower( $key );
-
-        return array_key_exists( $key, $this->values );
+        return true;
     }
 }
