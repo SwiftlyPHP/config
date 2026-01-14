@@ -3,8 +3,7 @@
 namespace Swiftly\Config\File;
 
 use Swiftly\Config\ConfigFileInterface;
-use Swiftly\Config\Exception\FileParseException;
-use Swiftly\Config\Exception\FileReadException;
+use Swiftly\Config\Exception\ConfigFileException;
 use Swiftly\Config\Store;
 
 use function file_get_contents;
@@ -35,7 +34,7 @@ final class JsonFile implements ConfigFileInterface
     public function load(): Store
     {
         if (!is_file($this->filePath)) {
-            throw new FileReadException($this->filePath);
+            throw ConfigFileException::fileReadError($this->filePath);
         }
 
         $contents = file_get_contents($this->filePath);
@@ -43,7 +42,7 @@ final class JsonFile implements ConfigFileInterface
         $decoded = json_decode($contents, true);
 
         if (!is_array($decoded)) {
-            throw new FileParseException($this->filePath);
+            throw ConfigFileException::fileParseError($this->filePath);
         }
 
         return new Store($decoded);

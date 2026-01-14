@@ -18,14 +18,14 @@ final class StoreTest extends TestCase
                 'arthur' => [
                     'planet' => 'Earth',
                     'friendly' => true,
-                    'is_robot' => false
+                    'is_robot' => false,
                 ],
                 'marvin' => [
-                    'is_robot' => true
-                ]
+                    'is_robot' => true,
+                ],
             ],
             'null' => null,
-            'bool' => false
+            'bool' => false,
         ]);
     }
 

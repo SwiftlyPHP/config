@@ -3,8 +3,7 @@
 namespace Swiftly\Config\Tests\File;
 
 use PHPUnit\Framework\TestCase;
-use Swiftly\Config\Exception\FileParseException;
-use Swiftly\Config\Exception\FileReadException;
+use Swiftly\Config\Exception\ConfigFileException;
 use Swiftly\Config\File\JsonFile;
 use Swiftly\Config\Store;
 
@@ -33,7 +32,7 @@ final class JsonFileTest extends TestCase
      */
     public function testThrowsOnUnreadableFile(): void
     {
-        self::expectException(FileReadException::class);
+        self::expectException(ConfigFileException::class);
 
         // File doesn't exist
         $file = new JsonFile(dirname(__DIR__ . '/assets/missing.json'));
@@ -47,7 +46,7 @@ final class JsonFileTest extends TestCase
      */
     public function testThrowsOnUnparsableFile(): void
     {
-        self::expectException(FileParseException::class);
+        self::expectException(ConfigFileException::class);
 
         // File contains invalid content
         $file = new JsonFile(dirname(__DIR__) . '/assets/invalid.json');
