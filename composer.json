@@ -6,8 +6,7 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^7.4 || ^8",
-        "ext-json": "*"
+        "php": "^8"
     },
     "require-dev": {
         "vimeo/psalm": "^5.15",
