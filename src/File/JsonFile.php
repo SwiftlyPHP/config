@@ -1,17 +1,16 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Swiftly\Config\File;
 
 use Swiftly\Config\ConfigFileInterface;
-use Swiftly\Config\Store;
-use Swiftly\Config\Exception\FileReadException;
 use Swiftly\Config\Exception\FileParseException;
+use Swiftly\Config\Exception\FileReadException;
+use Swiftly\Config\Store;
 
-use function is_file;
 use function file_get_contents;
-use function json_decode;
 use function is_array;
-
+use function is_file;
+use function json_decode;
 
 /**
  * Class used to load config values from JSON files.

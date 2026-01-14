@@ -1,12 +1,12 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Swiftly\Config\Tests\File;
 
 use PHPUnit\Framework\TestCase;
+use Swiftly\Config\Exception\FileParseException;
+use Swiftly\Config\Exception\FileReadException;
 use Swiftly\Config\File\JsonFile;
 use Swiftly\Config\Store;
-use Swiftly\Config\Exception\FileReadException;
-use Swiftly\Config\Exception\FileParseException;
 
 use function dirname;
 

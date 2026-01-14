@@ -1,9 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Swiftly\Config;
 
-use Swiftly\Config\Exception\FileReadException;
 use Swiftly\Config\Exception\FileParseException;
+use Swiftly\Config\Exception\FileReadException;
 use Swiftly\Config\Store;
 
 /**

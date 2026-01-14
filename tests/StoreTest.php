@@ -1,9 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Swiftly\Config\Tests;
 
-use Swiftly\Config\Store;
 use PHPUnit\Framework\TestCase;
+use Swiftly\Config\Store;
 
 final class StoreTest extends TestCase
 {
