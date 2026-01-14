@@ -5,12 +5,12 @@ namespace Swiftly\Config\Exception;
 use RuntimeException;
 
 /**
- * Thrown when a file cannot be opened or read from
+ * Thrown when a file cannot be opened or read from.
  */
 final class FileReadException extends RuntimeException
 {
     /**
-     * Indicate the given file is unreadable
+     * Indicate the given file is unreadable.
      *
      * @param string $file_path Absolute path to file
      */

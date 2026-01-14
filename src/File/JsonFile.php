@@ -14,38 +14,37 @@ use function is_array;
 
 
 /**
- * Class used to load config values from JSON files
+ * Class used to load config values from JSON files.
  *
  * @api
+ *
+ * @upgrade:php8.1 Mark property as readonly
  */
 final class JsonFile implements ConfigFileInterface
 {
-    /** @var non-empty-string $file_path */
-    private string $file_path;
-
     /**
-     * Create a new loader around the given JSON file
+     * Create a new loader around the given JSON file.
      *
-     * @param non-empty-string $file_path Absolute file path
+     * @param non-empty-string $filePath Absolute file path
      */
-    public function __construct(string $file_path)
-    {
-        $this->file_path = $file_path;
+    public function __construct(
+        private string $filePath,
+    ) {
     }
 
     /** {@inheritDoc} */
     public function load(): Store
     {
-        if (!is_file($this->file_path)) {
-            throw new FileReadException($this->file_path);
+        if (!is_file($this->filePath)) {
+            throw new FileReadException($this->filePath);
         }
 
-        $contents = file_get_contents($this->file_path);
+        $contents = file_get_contents($this->filePath);
         $contents = $contents ?: '';
         $decoded = json_decode($contents, true);
 
         if (!is_array($decoded)) {
-            throw new FileParseException($this->file_path);
+            throw new FileParseException($this->filePath);
         }
 
         return new Store($decoded);

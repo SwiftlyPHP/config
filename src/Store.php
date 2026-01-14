@@ -7,35 +7,33 @@ use function is_array;
 use function array_key_exists;
 
 /**
- * Represents a generic config object
+ * Represents a generic config object.
  * 
  * @api
+ *
+ * @upgrade:php8.1 Mark property as readonly
  */
 class Store
 {
-    /** @var array $data */
-    private array $data;
-
     /**
-     * Creates a new data store around a collection of values
-     * 
-     * @param array $data Config values
+     * Creates a new data store around a collection of values.
      */
-    public function __construct(array $data)
-    {
-        $this->data = $data;
+    public function __construct(
+        private array $data,
+    ) {
     }
 
     /**
-     * Retrieve a value from the store
+     * Retrieve a value from the store.
      *
-     * @php:8.0 Use mixed type hint
      * @template T
-     * @param string $key Config option key
-     * @param T $default  Value to return if key not found
-     * @return mixed|T    Config value
+     *
+     * @param non-empty-string $key
+     * @param T $default
+     *
+     * @return T
      */
-    public function get(string $key, $default = null)// :mixed
+    public function get(string $key, mixed $default = null): mixed
     {
         $data = $this->data;
 
@@ -52,10 +50,9 @@ class Store
     }
 
     /**
-     * Determine if a value exists in the store
+     * Determine if a value exists in the store.
      * 
-     * @param string $key Config option key
-     * @return bool       Value exists in store
+     * @param non-empty-string $key
      */
     public function has(string $key): bool
     {

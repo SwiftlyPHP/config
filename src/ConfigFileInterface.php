@@ -7,18 +7,17 @@ use Swiftly\Config\Exception\FileParseException;
 use Swiftly\Config\Store;
 
 /**
- * Interface for all classes capable of reading config values from files
+ * Interface for all classes capable of reading config values from files.
  *
  * @api
  */
 interface ConfigFileInterface
 {
     /**
-     * Load the config values of this file into a store object
+     * Load the config values of this file into a store object.
      *
      * @throws FileReadException  If the file does not exist or is unreadable
      * @throws FileParseException If the file cannot be parsed
-     * @return Store              Config value store
      */
     public function load(): Store;
 }
