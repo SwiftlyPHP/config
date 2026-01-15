@@ -11,15 +11,12 @@ use Swiftly\Config\Schema\Trait\HasMinimum;
 use Swiftly\Config\Schema\Trait\IsOneOf;
 use Swiftly\Config\Type;
 
-use function array_map;
-use function count;
+use function is_int;
 
 /**
  * @api
  *
  * @implements IsOneOfInterface<int>
- *
- * @upgrade:php8.1 Mark properties as readonly
  */
 final class IntNode extends AbstractNode implements
     HasRangeInterface,
@@ -59,33 +56,29 @@ final class IntNode extends AbstractNode implements
     /**
      * {@inheritDoc}
      */
-    public function configure(array $config): void
+    public function configure(array $config): static
     {
-        if (!empty($config['oneOf'])
-            && Type::isIntOrFloatArray($config['oneOf'])
-        ) {
-            $this->oneOf(array_map('intval', $config['oneOf']));
+        parent::configure($config);
+
+        if (!empty($config['oneOf']) && Type::isIntArray($config['oneOf'])) {
+            $this->oneOf($config['oneOf']);
         }
 
-        if (isset($config['maximum'])
-            && Type::isIntOrFloat($config['maximum'])
-        ) {
-            $this->maximum((int) $config['maximum']);
+        if (isset($config['maximum']) && is_int($config['maximum'])) {
+            $this->maximum($config['maximum']);
         }
 
-        if (isset($config['minimum'])
-            && Type::isIntOrFloat($config['minimum'])
-        ) {
-            $this->minimum((int) $config['minimum']);
+        if (isset($config['minimum']) && is_int($config['minimum'])) {
+            $this->minimum($config['minimum']);
         }
 
-        if (isset($config['range'])
-            && Type::isIntOrFloatArray($config['range'])
-            && count($config['range']) === 2
+        if (isset($config['range'][0], $config['range'][1])
+            && is_int($config['range'][0])
+            && is_int($config['range'][1])
         ) {
-            [$minimum, $maximum] = $config['range'];
-
-            $this->range((int) $minimum, (int) $maximum);
+            $this->range($config['range'][0], $config['range'][1]);
         }
+
+        return $this;
     }
 }

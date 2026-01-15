@@ -10,7 +10,7 @@
         "symfony/polyfill-php84": "^1.33"
     },
     "require-dev": {
-        "vimeo/psalm": "^5.15",
+        "vimeo/psalm": "^5.26",
         "phpunit/phpunit": "^9.6",
         "friendsofphp/php-cs-fixer": "^3.92"
     },

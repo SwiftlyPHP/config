@@ -7,8 +7,6 @@ use Swiftly\Config\Schema\IsConfigurableInterface;
 
 /**
  * @api
- *
- * @upgrade:php8.1 Mark properties as readonly
  */
 final class BoolNode extends AbstractNode implements IsConfigurableInterface
 {
@@ -21,15 +19,5 @@ final class BoolNode extends AbstractNode implements IsConfigurableInterface
 
         $this->nullable(false);
         $this->optional(false);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function configure(array $config): void
-    {
-        // TODO
-
-        return;
     }
 }

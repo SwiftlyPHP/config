@@ -2,13 +2,18 @@
 
 namespace Swiftly\Config\Schema;
 
+use Swiftly\Config\Exception\SchemaException;
 use Swiftly\Config\Schema\Trait\IsNullable;
 use Swiftly\Config\Schema\Trait\IsOptional;
 
+use function assert;
+
 /**
- * @internal
+ * @internal Should not implement any interfaces to allow subclass flexibility
+ *
+ * @upgrade:php8.1 Mark properties as readonly
  */
-abstract class AbstractNode
+abstract class AbstractNode implements NodeInterface
 {
     use IsNullable;
     use IsOptional;
@@ -27,5 +32,30 @@ abstract class AbstractNode
     public function getKey(): string
     {
         return $this->key;
+    }
+
+    /**
+     * @internal No `IsConfigurableInterface` to allow subclass flexibility
+     *
+     * @param array<string, mixed> $config
+     *
+     * @return $this
+     */
+    public function configure(array $config): static
+    {
+        assert(
+            $this instanceof IsConfigurableInterface,
+            SchemaException::invalidInheritanceOfConfigure($this),
+        );
+
+        if (isset($config['optional'])) {
+            $this->optional((bool) $config['optional']);
+        }
+
+        if (isset($config['nullable'])) {
+            $this->nullable((bool) $config['nullable']);
+        }
+
+        return $this;
     }
 }

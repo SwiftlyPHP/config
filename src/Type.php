@@ -4,30 +4,20 @@ namespace Swiftly\Config;
 
 use function array_all;
 use function is_array;
-use function is_float;
-use function is_int;
-use function is_string;
 
+/**
+ * @internal
+ */
 abstract class Type
 {
     /**
      * @pure
      *
-     * @psalm-assert-if-true int|float $value
+     * @psalm-assert-if-true int[] $value
      */
-    final public static function isIntOrFloat(mixed $value): bool
+    final public static function isIntArray(mixed $value): bool
     {
-        return is_int($value) || is_float($value);
-    }
-
-    /**
-     * @pure
-     *
-     * @psalm-assert-if-true array<int|float> $value
-     */
-    final public static function isIntOrFloatArray(mixed $value): bool
-    {
-        return is_array($value) && array_all($value, [self::class, 'isIntOrFloat']);
+        return is_array($value) && self::arrayIs($value, 'is_int');
     }
 
     /**
@@ -37,10 +27,21 @@ abstract class Type
      */
     final public static function isStringArray(mixed $value): bool
     {
-        return is_array($value)
-            && array_all(
-                $value,
-                static fn (mixed $item) => is_string($item),
-            );
+        return is_array($value) && self::arrayIs($value, 'is_string');
+    }
+
+    /**
+     * Stops `ArgumentCountError` from the `is_*` family of functions.
+     *
+     * @pure
+     *
+     * @param callable(mixed):bool $condition
+     */
+    private static function arrayIs(array $array, callable $condition): bool
+    {
+        return array_all(
+            $array,
+            static fn (mixed $value): bool => $condition($value),
+        );
     }
 }

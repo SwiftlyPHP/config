@@ -5,15 +5,21 @@ use Swiftly\Config\Schema\Node\RootNode;
 
 require __DIR__ . '/vendor/autoload.php';
 
-$schema = new RootNode();
-$schema
+$schema = RootNode::define()
     ->string('environment', ['oneOf' => ['prod', 'dev']])
-    ->bool('debug')
+    ->bool('debug', ['optional' => true])
     ->object('database', static function (ObjectNode $database): void {
         $database
+            ->optional()
             ->string('username', ['optional' => true])
             ->string('password', ['optional' => true])
             ->int('port', ['range' => [0, 255]]);
+    })
+    ->object('cache', static function (ObjectNode $cache): void {
+        $cache
+            ->optional()
+            ->string('type', ['oneOf' => ['file', 'redis']])
+            ->int('lifetime', ['optional' => true, 'range' => [0, 3600]]);
     });
 
 var_dump($schema);

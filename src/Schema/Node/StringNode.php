@@ -12,8 +12,6 @@ use Swiftly\Config\Type;
  * @api
  *
  * @implements IsOneOfInterface<string>
- *
- * @upgrade:php8.1 Mark properties as readonly
  */
 final class StringNode extends AbstractNode implements
     IsConfigurableInterface,
@@ -37,10 +35,14 @@ final class StringNode extends AbstractNode implements
     /**
      * {@inheritDoc}
      */
-    public function configure(array $config): void
+    public function configure(array $config): static
     {
+        parent::configure($config);
+
         if (!empty($config['oneOf']) && Type::isStringArray($config['oneOf'])) {
             $this->oneOf($config['oneOf']);
         }
+
+        return $this;
     }
 }

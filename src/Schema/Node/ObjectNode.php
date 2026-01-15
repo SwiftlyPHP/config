@@ -2,23 +2,25 @@
 
 namespace Swiftly\Config\Schema\Node;
 
+use Swiftly\Config\Exception\SchemaException;
 use Swiftly\Config\Schema\AbstractNode;
 use Swiftly\Config\Schema\HasPropertiesInterface;
 use Swiftly\Config\Schema\IsConfigurableInterface;
 
+use function assert;
 use function is_callable;
 
 /**
  * @api
  *
- * @upgrade:php8.1 Mark properties as readonly
+ * @upgrade:php8.1 Mark property as readonly
  */
 class ObjectNode extends AbstractNode implements
     HasPropertiesInterface,
     IsConfigurableInterface
 {
     /**
-     * @var array<non-empty-string,AbstractNode>
+     * @var array<non-empty-string, AbstractNode>
      */
     protected array $items = [];
 
@@ -35,52 +37,67 @@ class ObjectNode extends AbstractNode implements
 
     /**
      * @param non-empty-string $key
-     * @param null|array<string,mixed>|callable(StringNode):void $config
+     * @param null|array<string, mixed>|callable(StringNode):void $config
      *
      * @return $this
      */
     public function string(string $key, null|array|callable $config = null): self
     {
-        $this->items[$key] = self::applyConfig(new StringNode($key), $config);
-
-        return $this;
+        return $this->property($key, new StringNode($key), $config);
     }
 
     /**
      * @param non-empty-string $key
-     * @param null|array<string,mixed>|callable(IntNode):void $config
+     * @param null|array<string, mixed>|callable(IntNode):void $config
      *
      * @return $this
      */
     public function int(string $key, null|array|callable $config = null): self
     {
-        $this->items[$key] = self::applyConfig(new IntNode($key), $config);
-
-        return $this;
+        return $this->property($key, new IntNode($key), $config);
     }
 
     /**
      * @param non-empty-string $key
-     * @param null|array<string,mixed>|callable(BoolNode):void $config
+     * @param null|array<string, mixed>|callable(BoolNode):void $config
      *
      * @return $this
      */
     public function bool(string $key, null|array|callable $config = null): self
     {
-        $this->items[$key] = self::applyConfig(new BoolNode($key), $config);
-
-        return $this;
+        return $this->property($key, new BoolNode($key), $config);
     }
 
     /**
      * @param non-empty-string $key
-     * @param null|array<string,mixed>|callable(ObjectNode):void $config
+     * @param null|array<string, mixed>|callable(ObjectNode):void $config
      *
      * @return $this
      */
     public function object(string $key, null|array|callable $config = null): self
     {
-        $this->items[$key] = self::applyConfig(new ObjectNode($key), $config);
+        return $this->property($key, new ObjectNode($key), $config);
+    }
+
+    /**
+     * @template T of AbstractNode
+     *
+     * @psalm-assert IsConfigurableInterface $node
+     *
+     * @param non-empty-string $key
+     * @param T $node
+     * @param null|array<string, mixed>|callable(T):void $config
+     *
+     * @throws SchemaException If this type of node cannot be configured
+     *
+     * @return $this
+     */
+    public function property(
+        string $key,
+        AbstractNode $node,
+        null|array|callable $config = null,
+    ): static {
+        $this->items[$key] = self::applyConfig($node, $config);
 
         return $this;
     }
@@ -94,18 +111,12 @@ class ObjectNode extends AbstractNode implements
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public function configure(array $config): void
-    {
-        return;
-    }
-
-    /**
      * @template T of AbstractNode
      *
      * @param T $node
-     * @param null|array<string,mixed>|callable(T):void $config
+     * @param null|array<string, mixed>|callable(T):void $config
+     *
+     * @throws SchemaException
      *
      * @return T
      */
@@ -127,22 +138,22 @@ class ObjectNode extends AbstractNode implements
     }
 
     /**
-     * @param array<string,mixed> $config
+     * @psalm-assert IsConfigurableInterface $node
+     *
+     * @param array<string, mixed> $config
+     *
+     * @throws SchemaException
      */
     private static function defaultConfig(
         AbstractNode $node,
         array $config,
     ): void {
-        if (isset($config['optional'])) {
-            $node->optional((bool) $config['optional']);
+        assert(!empty($config));
+
+        if (!$node instanceof IsConfigurableInterface) {
+            throw SchemaException::unconfigurableNode($node);
         }
 
-        if (isset($config['nullable'])) {
-            $node->nullable((bool) $config['nullable']);
-        }
-
-        if ($node instanceof IsConfigurableInterface) {
-            $node->configure($config);
-        }
+        $node->configure($config);
     }
 }

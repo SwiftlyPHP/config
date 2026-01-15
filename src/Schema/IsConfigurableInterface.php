@@ -8,7 +8,9 @@ namespace Swiftly\Config\Schema;
 interface IsConfigurableInterface
 {
     /**
-     * @param array<string,mixed> $config
+     * @param array<string, mixed> $config
+     *
+     * @return $this
      */
-    public function configure(array $config): void;
+    public function configure(array $config): static;
 }
