@@ -7,6 +7,9 @@ use Swiftly\Config\ExceptionInterface;
 
 use function sprintf;
 
+/**
+ * @api
+ */
 class ConfigFileException extends RuntimeException implements ExceptionInterface
 {
     final public static function fileReadError(string $filePath): self

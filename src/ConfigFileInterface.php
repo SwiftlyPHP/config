@@ -2,8 +2,7 @@
 
 namespace Swiftly\Config;
 
-use Swiftly\Config\Exception\FileParseException;
-use Swiftly\Config\Exception\FileReadException;
+use Swiftly\Config\Exception\ConfigFileException;
 use Swiftly\Config\Store;
 
 /**
@@ -16,8 +15,7 @@ interface ConfigFileInterface
     /**
      * Load the config values of this file into a store object.
      *
-     * @throws FileReadException  If the file does not exist or is unreadable
-     * @throws FileParseException If the file cannot be parsed
+     * @throws ConfigFileException If the file cannot be read or parsed.
      */
     public function load(): Store;
 }
