@@ -3,6 +3,9 @@
 namespace Swiftly\Config\Schema\Node;
 
 use Swiftly\Config\Exception\SchemaException;
+use Swiftly\Config\Schema\AbstractNode;
+use Swiftly\Config\Schema\NodeVisitor;
+use Swiftly\Config\Schema\TreeDepth;
 
 /**
  * @api
@@ -24,6 +27,7 @@ final class RootNode extends ObjectNode
      * Utility static constructor to avoid use of intermediary variable.
      *
      * @param null|callable(self):void $definition
+     *
      * @return self
      */
     public static function define(?callable $definition = null): self
@@ -35,6 +39,23 @@ final class RootNode extends ObjectNode
         }
 
         return $root;
+    }
+
+    /**
+     * @param callable(AbstractNode, string):void $callback
+     * @param non-empty-string $separator
+     *
+     * @return $this
+     */
+    public function walk(callable $callback, string $separator = '.'): static
+    {
+        NodeVisitor::walkNodes(
+            new TreeDepth($separator),
+            $this->items,
+            $callback,
+        );
+
+        return $this;
     }
 
     /**
