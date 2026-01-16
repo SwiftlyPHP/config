@@ -2,13 +2,12 @@
 
 namespace Swiftly\Config\Tests;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 use Swiftly\Config\Type;
 
-/**
- * @covers \Swiftly\Config\Type
- */
+#[CoversClass(Type::class)]
 final class TypeTest extends TestCase
 {
     public function testCanDetermineIfArrayContainsOnlyInt(): void

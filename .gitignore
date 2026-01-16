@@ -1,9 +1,9 @@
+# OS specific
+.DS_Store
+
 # Composer
 /vendor
 /composer.lock
 
 # PHPUnit
-/reports
-
-# Mac specific
-.DS_Store
+/coverage

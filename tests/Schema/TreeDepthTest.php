@@ -2,15 +2,14 @@
 
 namespace Swiftly\Config\Tests\Schema;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Swiftly\Config\Schema\TreeDepth;
 
-/**
- * @covers \Swiftly\Config\Schema\TreeDepth
- */
+#[CoversClass(TreeDepth::class)]
 final class TreeDepthTest extends TestCase
 {
-    private TreeDepth $depth;
+    private readonly TreeDepth $depth;
 
     /**
      * {@inheritDoc}

@@ -10,8 +10,6 @@ use function assert;
 
 /**
  * @internal Should not implement most interfaces to allow subclass flexibility
- *
- * @upgrade:php8.1 Mark properties as readonly
  */
 abstract class AbstractNode implements NodeInterface
 {
@@ -22,7 +20,7 @@ abstract class AbstractNode implements NodeInterface
      * @param non-empty-string $key
      */
     public function __construct(
-        private string $key,
+        private readonly string $key,
     ) {
     }
 

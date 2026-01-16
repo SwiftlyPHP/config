@@ -10,8 +10,6 @@ use function is_array;
  * Represents a generic config object.
  *
  * @api
- *
- * @upgrade:php8.1 Mark property as readonly
  */
 class Store
 {
@@ -19,7 +17,7 @@ class Store
      * Creates a new data store around a collection of values.
      */
     public function __construct(
-        private array $data,
+        private readonly array $data,
     ) {
     }
 

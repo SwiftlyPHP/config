@@ -10,7 +10,6 @@ use Swiftly\Config\Schema\TreeDepth;
 /**
  * @api
  *
- * @upgrade:php8.1 Use :never to type return value of `configure()`
  * @upgrade:php8.2 Use false to type return of `isOptional()`, `isNullable()`
  */
 final class RootNode extends ObjectNode
@@ -79,7 +78,7 @@ final class RootNode extends ObjectNode
      *
      * @throws SchemaException The root node cannot be configured
      */
-    public function configure(array $config): static
+    public function configure(array $config): never
     {
         throw SchemaException::rootNodeConfig();
     }

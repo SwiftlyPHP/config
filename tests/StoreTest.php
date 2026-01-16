@@ -2,12 +2,14 @@
 
 namespace Swiftly\Config\Tests;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Swiftly\Config\Store;
 
+#[CoversClass(Store::class)]
 final class StoreTest extends TestCase
 {
-    private Store $store;
+    private readonly Store $store;
 
     public function setUp(): void
     {
@@ -29,10 +31,6 @@ final class StoreTest extends TestCase
         ]);
     }
 
-    /**
-     * @covers \Swiftly\Config\Store::__construct
-     * @covers \Swiftly\Config\Store::get
-     */
     public function testCanGetValue(): void
     {
         self::assertEquals('Douglas', $this->store->get('name'));
@@ -43,10 +41,6 @@ final class StoreTest extends TestCase
         self::assertNull($this->store->get('poetry'));
     }
 
-    /**
-     * @covers \Swiftly\Config\Store::__construct
-     * @covers \Swiftly\Config\Store::get
-     */
     public function testCanGetNestedValue(): void
     {
         self::assertEquals('Earth', $this->store->get('friends.arthur.planet'));
@@ -56,10 +50,6 @@ final class StoreTest extends TestCase
         self::assertNull($this->store->get('friends.ford'));
     }
 
-    /**
-     * @covers \Swiftly\Config\Store::__construct
-     * @covers \Swiftly\Config\Store::has
-     */
     public function testCanCheckValueExists(): void
     {
         self::assertTrue($this->store->has('name'));
@@ -72,10 +62,6 @@ final class StoreTest extends TestCase
         self::assertFalse($this->store->has('unknown'));
     }
 
-    /**
-     * @covers \Swiftly\Config\Store::__construct
-     * @covers \Swiftly\Config\Store::has
-     */
     public function testCanCheckNestedValueExists(): void
     {
         self::assertTrue($this->store->has('friends.arthur.planet'));

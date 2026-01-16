@@ -7,22 +7,21 @@ use function implode;
 
 /**
  * @internal
- *
- * @upgrade:php8.1 Mark $separator as readonly
  */
 class TreeDepth
 {
     /**
      * @var list<non-empty-string>
      */
-    private array $levels = [];
+    private array $levels;
 
     /**
      * @param non-empty-string $separator
      */
     public function __construct(
-        private string $separator,
+        private readonly string $separator,
     ) {
+        $this->levels = [];
     }
 
     /**

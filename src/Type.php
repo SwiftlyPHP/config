@@ -7,7 +7,7 @@ use UnitEnum;
 use function array_all;
 use function is_a;
 use function is_array;
-use function is_object;
+use function is_string;
 
 /**
  * @internal
@@ -45,7 +45,7 @@ abstract class Type
      */
     final public static function isEnumCase(mixed $value, string $enumName): bool
     {
-        return is_object($value) && is_a($value, $enumName);
+        return is_string($value) && is_a($value, $enumName);
     }
 
     /**

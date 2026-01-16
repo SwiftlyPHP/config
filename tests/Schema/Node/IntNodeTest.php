@@ -2,12 +2,20 @@
 
 namespace Swiftly\Config\Tests\Schema\Node;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use Swiftly\Config\Schema\AbstractNode;
 use Swiftly\Config\Schema\Node\IntNode;
+use Swiftly\Config\Schema\Trait\IsNullable;
+use Swiftly\Config\Schema\Trait\IsOptional;
 use Swiftly\Config\Tests\Schema\AbstractNodeTestCase;
 
 /**
  * @extends parent<IntNode>
  */
+#[CoversClass(IntNode::class)]
+#[CoversClass(AbstractNode::class)]
+#[CoversClass(IsNullable::class)]
+#[CoversClass(IsOptional::class)]
 final class IntNodeTest extends AbstractNodeTestCase
 {
     protected function setUp(): void

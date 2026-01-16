@@ -2,35 +2,37 @@
 
 namespace Swiftly\Config\Tests\Schema;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Swiftly\Config\Schema\AbstractNode;
 use Swiftly\Config\Schema\HasPropertiesInterface;
 use Swiftly\Config\Schema\NodeVisitor;
 use Swiftly\Config\Schema\TreeDepth;
+use Swiftly\Config\Tests\Trait\WithConsecutiveTrait;
 
 use function array_key_last;
 use function array_map;
 use function explode;
 
 /**
- * @covers \Swiftly\Config\Schema\NodeVisitor
- *
- * @upgrade:php8.1 use intersection types to hint return of `createNodeStub`
  * @upgrade:php8.4 use `array_last` in `nodeKeys()` helper
  * @upgrade:phpunit10 use `createMockForIntersectionOfInterfaces`
  */
+#[CoversClass(NodeVisitor::class)]
 final class NodeVisitorTest extends TestCase
 {
+    use WithConsecutiveTrait;
+
     /**
      * @var (AbstractNode&Stub)[]
      */
-    private array $nodes;
+    private readonly array $nodes;
 
     /**
      * @var string[]
      */
-    private array $paths;
+    private readonly array $paths;
 
     /**
      * {@inheritDoc}
@@ -57,7 +59,7 @@ final class NodeVisitorTest extends TestCase
         $mockTreeDepth = $this->createMock(TreeDepth::class);
         $mockTreeDepth->expects(self::exactly(4))
             ->method('enter')
-            ->withConsecutive(...self::nodeKeys($this->paths))
+            ->with(self::withConsecutive(self::nodeKeys($this->paths)))
             ->willReturnOnConsecutiveCalls(...$this->paths);
         $mockTreeDepth->expects(self::exactly(4))
             ->method('toString')
@@ -91,10 +93,8 @@ final class NodeVisitorTest extends TestCase
 
     /**
      * @param non-empty-string $key
-     *
-     * @return AbstractNode&Stub
      */
-    private function createNodeStub(string $key): AbstractNode
+    private function createNodeStub(string $key): AbstractNode&Stub
     {
         $node = $this->createStub(AbstractNode::class);
         $node->method('getKey')->willReturn($key);
@@ -105,13 +105,11 @@ final class NodeVisitorTest extends TestCase
     /**
      * @param non-empty-string $key
      * @param AbstractNode[] $nodes
-     *
-     * @return AbstractNode&HasPropertiesInterface&Stub
      */
     private function createParentNodeStub(
         string $key,
         array $nodes,
-    ): AbstractNode {
+    ): ParentNode&Stub {
         $node = $this->createStub(ParentNode::class);
         $node->method('getKey')->willReturn($key);
         $node->method('getProperties')->willReturn($nodes);
@@ -125,17 +123,17 @@ final class NodeVisitorTest extends TestCase
      * @param list<string> $paths
      * @param non-empty-string $separator
      *
-     * @return list<list{string}>
+     * @return list<string>
      */
     private static function nodeKeys(
         array $paths,
         string $separator = '.',
     ): array {
         return array_map(
-            static function (string $path) use ($separator): array {
+            static function (string $path) use ($separator): string {
                 $components = explode($separator, $path);
 
-                return [$components[array_key_last($components)]];
+                return $components[array_key_last($components)];
             },
             $paths,
         );

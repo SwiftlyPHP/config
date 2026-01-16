@@ -2,6 +2,7 @@
 
 namespace Swiftly\Config\Tests\File;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Swiftly\Config\Exception\ConfigFileException;
 use Swiftly\Config\File\JsonFile;
@@ -9,12 +10,10 @@ use Swiftly\Config\Store;
 
 use function dirname;
 
+#[CoversClass(JsonFile::class)]
+#[CoversClass(ConfigFileException::class)]
 final class JsonFileTest extends TestCase
 {
-    /**
-     * @covers \Swiftly\Config\File\JsonFile::__construct
-     * @covers \Swiftly\Config\File\JsonFile::load
-     */
     public function testCanLoadValuesFromFile(): void
     {
         $file = new JsonFile(dirname(__DIR__) . '/assets/example.json');
@@ -25,30 +24,18 @@ final class JsonFileTest extends TestCase
         self::assertSame('nested values', $config->get('nested.some'));
     }
 
-    /**
-     * @covers \Swiftly\Config\File\JsonFile::__construct
-     * @covers \Swiftly\Config\File\JsonFile::load
-     * @covers \Swiftly\Config\Exception\FileReadException
-     */
     public function testThrowsOnUnreadableFile(): void
     {
         self::expectException(ConfigFileException::class);
 
-        // File doesn't exist
         $file = new JsonFile(dirname(__DIR__ . '/assets/missing.json'));
         $file->load();
     }
 
-    /**
-     * @covers \Swiftly\Config\File\JsonFile::__construct
-     * @covers \Swiftly\Config\File\JsonFile::load
-     * @covers \Swiftly\Config\Exception\FileParseException
-     */
     public function testThrowsOnUnparsableFile(): void
     {
         self::expectException(ConfigFileException::class);
 
-        // File contains invalid content
         $file = new JsonFile(dirname(__DIR__) . '/assets/invalid.json');
         $file->load();
     }

@@ -15,8 +15,6 @@ use function is_a;
  * @template T of BackedEnum
  *
  * @implements IsEnumBackedInterface<T>
- *
- * @upgrade:php8.1 Mark property as readonly
  */
 final class EnumNode extends AbstractNode implements
     IsConfigurableInterface,
@@ -25,7 +23,7 @@ final class EnumNode extends AbstractNode implements
     /**
      * @var class-string<T>
      */
-    private string $enumName;
+    private readonly string $enumName;
 
     /**
      * @var T|null

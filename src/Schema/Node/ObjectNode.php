@@ -13,8 +13,6 @@ use function is_callable;
 
 /**
  * @api
- *
- * @upgrade:php8.1 Mark property as readonly
  */
 class ObjectNode extends AbstractNode implements
     HasPropertiesInterface,
@@ -23,7 +21,7 @@ class ObjectNode extends AbstractNode implements
     /**
      * @var array<non-empty-string, AbstractNode>
      */
-    protected array $properties = [];
+    protected readonly array $properties = [];
 
     /**
      * @param non-empty-string $key

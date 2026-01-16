@@ -15,8 +15,6 @@ use function json_decode;
  * Class used to load config values from JSON files.
  *
  * @api
- *
- * @upgrade:php8.1 Mark property as readonly
  */
 final class JsonFile implements ConfigFileInterface
 {
@@ -26,11 +24,13 @@ final class JsonFile implements ConfigFileInterface
      * @param non-empty-string $filePath Absolute file path
      */
     public function __construct(
-        private string $filePath,
+        private readonly string $filePath,
     ) {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public function load(): Store
     {
         if (!is_file($this->filePath)) {

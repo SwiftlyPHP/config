@@ -5,8 +5,14 @@ use Swiftly\Config\Schema\Node\RootNode;
 
 require __DIR__ . '/vendor/autoload.php';
 
+enum Environment: string
+{
+    case Development = 'development';
+    case Production = 'production';
+}
+
 $schema = RootNode::define()
-    ->string('environment', ['oneOf' => ['prod', 'dev']])
+    ->enum('environment', Environment::class, ['default' => Environment::Development])
     ->bool('debug', ['optional' => true])
     ->object('database', static function (ObjectNode $database): void {
         $database
