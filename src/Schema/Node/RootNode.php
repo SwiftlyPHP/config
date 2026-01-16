@@ -51,7 +51,7 @@ final class RootNode extends ObjectNode
     {
         NodeVisitor::walkNodes(
             new TreeDepth($separator),
-            $this->items,
+            $this->properties,
             $callback,
         );
 

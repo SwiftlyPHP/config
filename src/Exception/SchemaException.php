@@ -51,6 +51,18 @@ final class SchemaException extends LogicException implements ExceptionInterface
         ));
     }
 
+    /**
+     * @param class-string $enumName
+     */
+    public static function invalidUseOfEnum(string $enumName): self
+    {
+        return new self(sprintf(
+            'Failed to create enum node, the given value of "%s" is not the'
+            . ' name of a backed enum (i.e: a class implementing "BackedEnum")',
+            $enumName,
+        ));
+    }
+
     private static function nodeName(AbstractNode $node): string
     {
         $nodeName = strtr($node::class, '\\', '/');

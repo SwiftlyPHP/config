@@ -2,6 +2,7 @@
 
 namespace Swiftly\Config\Schema\Node;
 
+use BackedEnum;
 use Swiftly\Config\Exception\SchemaException;
 use Swiftly\Config\Schema\AbstractNode;
 use Swiftly\Config\Schema\HasPropertiesInterface;
@@ -22,7 +23,7 @@ class ObjectNode extends AbstractNode implements
     /**
      * @var array<non-empty-string, AbstractNode>
      */
-    protected array $items = [];
+    protected array $properties = [];
 
     /**
      * @param non-empty-string $key
@@ -80,9 +81,24 @@ class ObjectNode extends AbstractNode implements
     }
 
     /**
-     * @template T of AbstractNode
+     * @template T of BackedEnum
      *
-     * @psalm-assert IsConfigurableInterface $node
+     * @param non-empty-string $key
+     * @param class-string<T> $enumName
+     * @param null|array<string, mixed>|callable(EnumNode<T>):void $config
+     *
+     * @return $this
+     */
+    public function enum(
+        string $key,
+        string $enumName,
+        null|array|callable $config = null,
+    ): self {
+        return $this->property($key, new EnumNode($key, $enumName), $config);
+    }
+
+    /**
+     * @template T of AbstractNode
      *
      * @param non-empty-string $key
      * @param T $node
@@ -97,7 +113,7 @@ class ObjectNode extends AbstractNode implements
         AbstractNode $node,
         null|array|callable $config = null,
     ): static {
-        $this->items[$key] = self::applyConfig($node, $config);
+        $this->properties[$key] = self::applyConfig($node, $config);
 
         return $this;
     }
@@ -107,7 +123,7 @@ class ObjectNode extends AbstractNode implements
      */
     public function getProperties(): array
     {
-        return $this->items;
+        return $this->properties;
     }
 
     /**
@@ -115,8 +131,6 @@ class ObjectNode extends AbstractNode implements
      *
      * @param T $node
      * @param null|array<string, mixed>|callable(T):void $config
-     *
-     * @throws SchemaException
      *
      * @return T
      */
@@ -141,8 +155,6 @@ class ObjectNode extends AbstractNode implements
      * @psalm-assert IsConfigurableInterface $node
      *
      * @param array<string, mixed> $config
-     *
-     * @throws SchemaException
      */
     private static function defaultConfig(
         AbstractNode $node,

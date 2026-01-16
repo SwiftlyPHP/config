@@ -9,7 +9,7 @@ use Swiftly\Config\Schema\Trait\IsOptional;
 use function assert;
 
 /**
- * @internal Should not implement any interfaces to allow subclass flexibility
+ * @internal Should not implement most interfaces to allow subclass flexibility
  *
  * @upgrade:php8.1 Mark properties as readonly
  */
