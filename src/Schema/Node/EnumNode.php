@@ -7,7 +7,6 @@ use Swiftly\Config\Exception\SchemaException;
 use Swiftly\Config\Schema\AbstractNode;
 use Swiftly\Config\Schema\IsConfigurableInterface;
 use Swiftly\Config\Schema\IsEnumBackedInterface;
-use Swiftly\Config\Type;
 
 use function is_a;
 
@@ -98,7 +97,7 @@ final class EnumNode extends AbstractNode implements
         parent::configure($config);
 
         if (isset($config['default'])
-            && Type::isEnumCase($config['default'], $this->enumName)
+            && $config['default'] instanceof $this->enumName
         ) {
             $this->defaultCase($config['default']);
         }
