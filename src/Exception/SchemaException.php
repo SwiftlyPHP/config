@@ -7,10 +7,7 @@ use Swiftly\Config\ExceptionInterface;
 use Swiftly\Config\Schema\AbstractNode;
 use Swiftly\Config\Schema\IsConfigurableInterface;
 
-use function basename;
-use function lcfirst;
 use function sprintf;
-use function strtr;
 
 /**
  * @api
@@ -32,7 +29,7 @@ final class SchemaException extends LogicException implements ExceptionInterface
             'Failed to configure node of type "%s" as it does not support being'
             . ' configured via array; it should be configured using a callback'
             . ' instead',
-            self::nodeName($node),
+            $node::class,
         ));
     }
 
@@ -61,14 +58,5 @@ final class SchemaException extends LogicException implements ExceptionInterface
             . ' name of a backed enum (i.e: a class implementing "BackedEnum")',
             $enumName,
         ));
-    }
-
-    private static function nodeName(AbstractNode $node): string
-    {
-        $nodeName = strtr($node::class, '\\', '/');
-        $nodeName = basename($nodeName, 'Node');
-        $nodeName = lcfirst($nodeName);
-
-        return $nodeName;
     }
 }
