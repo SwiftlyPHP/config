@@ -21,7 +21,7 @@ class ObjectNode extends AbstractNode implements
     /**
      * @var array<non-empty-string, AbstractNode>
      */
-    protected readonly array $properties = [];
+    protected array $properties = [];
 
     /**
      * @param non-empty-string $key

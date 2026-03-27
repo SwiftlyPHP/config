@@ -14,4 +14,12 @@
     <projectFiles>
         <directory name="src" />
     </projectFiles>
+    <issueHandlers>
+        <MissingOverrideAttribute errorLevel="suppress" />
+        <ClassMustBeFinal>
+            <errorLevel type="suppress">
+                <referencedClass name="Swiftly\Config\Schema\TreeDepth" />
+            </errorLevel>
+        </ClassMustBeFinal>
+    </issueHandlers>
 </psalm>
